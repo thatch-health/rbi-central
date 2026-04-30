@@ -55,6 +55,38 @@ class ActiveSupport::TimeWithZone
   # @shim: since `blank?` is always false, `present?` always returns `true`
   sig { returns(TrueClass) }
   def present?; end
+
+  sig { returns(::ActiveSupport::TimeZone) }
+  def time_zone; end
+end
+
+class ActiveSupport::TimeZone
+  sig { returns(::ActiveSupport::TimeWithZone) }
+  def now; end
+
+  sig { params(str: String, now: ::ActiveSupport::TimeWithZone).returns(T.nilable(::ActiveSupport::TimeWithZone)) }
+  def parse(str, now = now()); end
+
+  sig { returns(Date) }
+  def today; end
+
+  sig { returns(Date) }
+  def tomorrow; end
+
+  sig { returns(Date) }
+  def yesterday; end
+
+  sig { params(arg: T.any(::ActiveSupport::TimeZone, String, ::TZInfo::Timezone, Numeric, ::ActiveSupport::Duration)).returns(T.nilable(ActiveSupport::TimeZone)) }
+  def self.[](arg); end
+
+  sig { returns(T::Array[::ActiveSupport::TimeZone]) }
+  def self.all; end
+
+  sig { params(country_code: T.any(String, Symbol)).returns(T::Array[::ActiveSupport::TimeZone]) }
+  def self.country_zones(country_code); end
+
+  sig { params(name: String).returns(TZInfo::DataTimezone) }
+  def self.find_tzinfo(name); end
 end
 
 class Object
